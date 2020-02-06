@@ -3,8 +3,8 @@ import SignIn from "../../components/SignIn/SignIn";
 
 import "./SignInPage.scss";
 
-const SingInPage = () => {
+const SignInPage = () => {
   return <SignIn />;
 };
 
-export default SingInPage;
+export default SignInPage;
