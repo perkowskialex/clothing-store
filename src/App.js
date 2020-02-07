@@ -19,8 +19,24 @@ class App extends Component {
 
   componentDidMount() {
     //open subscription, calls user on state change
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      createUserProfileDocument(user);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        //get user ref
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot(snapShot => {
+          this.setState(
+            {
+              currentUser: { id: snapShot.id, ...snapShot.data() }
+            },
+            () => {
+              console.log(this.state);
+            }
+          );
+        });
+      } else {
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
 
