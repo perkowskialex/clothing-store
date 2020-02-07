@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./SignIn.scss";
+import { auth } from "../../firebase/firebase.utils";
 
 import FormInput from "../FormInput/FormInput";
 import CustomButton from "../CustomButton/CustomButton";
@@ -15,8 +16,17 @@ export default class SignIn extends Component {
       password: ""
     };
   }
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
+
+    const { email, password } = this.state;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({ email: "", password: "" });
+    } catch (error) {
+      console.log(error);
+    }
     this.setState({ email: "", password: "" });
   };
 
