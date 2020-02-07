@@ -25,14 +25,14 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    // close subscription
+    // close subscription --> prevents memory leaks
     this.unsubscribeFromAuth();
   }
 
   render() {
     return (
       <div className="App">
-        <Header />
+        <Header currentUser={this.state.currentUser} />
         <Switch>
           <Route component={HomePage} exact path="/" />{" "}
           <Route component={ShopPage} exact path="/shop" />{" "}
