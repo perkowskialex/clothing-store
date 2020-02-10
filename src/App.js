@@ -10,16 +10,10 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user-actions";
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null
-    };
-  }
-
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    const { setCurrentUser } = this.props;
     //open subscription, calls user on state change
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -27,18 +21,12 @@ class App extends Component {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
-          this.setState(
-            {
-              currentUser: { id: snapShot.id, ...snapShot.data() }
-            },
-            () => {
-              console.log(this.state);
-            }
-          );
+          this.props.setCurrentUser({
+            currentUser: { id: snapShot.id, ...snapShot.data() }
+          });
         });
-      } else {
-        this.setState({ currentUser: userAuth });
       }
+      setCurrentUser(userAuth);
     });
   }
 
@@ -50,7 +38,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route component={HomePage} exact path="/" />{" "}
           <Route component={ShopPage} exact path="/shop" />{" "}
