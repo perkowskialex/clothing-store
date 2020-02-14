@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import { auth } from "../../firebase/firebase.utils";
@@ -9,7 +8,6 @@ import {
   LogoContainer,
   HeaderContainer,
   OptionsContainer,
-  OptionDiv,
   OptionLink
 } from "./HeaderStyles";
 
@@ -28,7 +26,9 @@ const Header = ({ currentUser, hidden }) => {
         <OptionLink to="/shop">SHOP</OptionLink>
         <OptionLink to="/shop">CONTACT</OptionLink>
         {currentUser ? (
-          <OptionLink onClick={() => auth.signOut()}>SIGN OUT</OptionLink>
+          <OptionLink as="div" onClick={() => auth.signOut()}>
+            SIGN OUT
+          </OptionLink>
         ) : (
           <OptionLink to="/signin">SIGN IN</OptionLink>
         )}
