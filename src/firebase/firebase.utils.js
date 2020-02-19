@@ -16,11 +16,15 @@ const config = {
 firebase.initializeApp(config);
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-  // only want this on sign in --> valid user obj
+  //  only want this on sign in --> valid user obj
   if (!userAuth) return;
-  //get user ref at that location and then get snapshot to figure out if theres data in that location
+  //  get user ref at that location and then get snapshot to figure out if theres data in that location
   const userRef = firestore.doc(`users/${userAuth.uid}`);
+  // console.log(userRef);
+  //  get the snapshot object
   const snapShot = await userRef.get();
+  // console.log(snapShot);
+
   if (!snapShot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
