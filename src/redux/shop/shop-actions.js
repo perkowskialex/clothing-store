@@ -4,9 +4,8 @@ import {
   convertCollectionsSnapshotToMap
 } from "../../firebase/firebase.utils";
 
-export const fetchCollectionsStart = collectionsMap => ({
-  type: ShopActionTypes.FETCH_COLLECTIONS_START,
-  payload: collectionsMap
+export const fetchCollectionsStart = () => ({
+  type: ShopActionTypes.FETCH_COLLECTIONS_START
 });
 
 export const fetchCollectionsSuccess = collectionsMap => ({
@@ -29,7 +28,7 @@ export const fetchCollectionsStartAsync = () => {
       .get()
       .then(snapshot => {
         const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-        fetchCollectionsSuccess(collectionsMap);
+        dispatch(fetchCollectionsSuccess(collectionsMap));
       })
       .catch(error => dispatch(fetchCollectionsFailure(error.message)));
   };
