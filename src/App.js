@@ -10,12 +10,16 @@ import Header from "./components/Header/Header";
 import { connect } from "react-redux";
 
 import { selectCurrentUser } from "./redux/user/user-selector";
+import { checkUserSession } from "./redux/user/user-actions";
 import { createStructuredSelector } from "reselect";
 
 class App extends Component {
   unsubscribeFromAuth = null;
 
-  componentDidMount() {}
+  componentDidMount() {
+    const { checkUserSession } = this.props;
+    checkUserSession();
+  }
 
   componentWillUnmount() {
     // close subscription --> prevents memory leaks
@@ -46,4 +50,8 @@ const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  checkUserSession: () => dispatch(checkUserSession())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
