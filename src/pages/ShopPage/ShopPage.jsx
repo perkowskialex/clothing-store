@@ -11,7 +11,7 @@ import CollectionPageContainer from "../Collection/CollectionContainer";
 const ShopPage = ({ match, fetchCollectionsStart }) => {
   useEffect(() => {
     fetchCollectionsStart();
-  });
+  }, [fetchCollectionsStart]);
 
   return (
     <div className="shop-page">
