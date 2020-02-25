@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import HomePage from "./pages/HomePage/HomePage";
 import ShopPage from "./pages/ShopPage/ShopPage";
@@ -13,39 +13,30 @@ import { selectCurrentUser } from "./redux/user/user-selector";
 import { checkUserSession } from "./redux/user/user-actions";
 import { createStructuredSelector } from "reselect";
 
-class App extends Component {
-  unsubscribeFromAuth = null;
-
-  componentDidMount() {
-    const { checkUserSession } = this.props;
+const App = ({ checkUserSession, currentUser }) => {
+  useEffect(() => {
+    // want it to fire only the first time (cdm)
     checkUserSession();
-  }
+    //pass check user session into array, property function from mapDispatchToProps
+  }, [checkUserSession]);
 
-  componentWillUnmount() {
-    // close subscription --> prevents memory leaks
-    this.unsubscribeFromAuth();
-  }
+  return (
+    <div className="App">
+      <Header />
+      <Switch>
+        <Route component={HomePage} exact path="/" />{" "}
+        <Route component={ShopPage} path="/shop" />{" "}
+        <Route component={Checkout} exact path="/checkout" />{" "}
+        <Route
+          exact
+          path="/signin"
+          render={() => (currentUser ? <Redirect to="/" /> : <SignInPage />)}
+        />{" "}
+      </Switch>
+    </div>
+  );
+};
 
-  render() {
-    return (
-      <div className="App">
-        <Header />
-        <Switch>
-          <Route component={HomePage} exact path="/" />{" "}
-          <Route component={ShopPage} path="/shop" />{" "}
-          <Route component={Checkout} exact path="/checkout" />{" "}
-          <Route
-            exact
-            path="/signin"
-            render={() =>
-              this.props.currentUser ? <Redirect to="/" /> : <SignInPage />
-            }
-          />{" "}
-        </Switch>
-      </div>
-    );
-  }
-}
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 });
