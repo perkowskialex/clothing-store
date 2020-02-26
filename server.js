@@ -9,6 +9,9 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+// bring in stripe and then invoke it with the stripe secret key
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 //instantiate a new express application
 const app = express();
 // set port server (5000)
@@ -41,4 +44,27 @@ app.listen(port, error => {
   }
   // if no error console log port #
   console.log("server running on port " + port);
+});
+
+//backend Stripe payment route
+
+// post gets a req obj and a res obj
+// this will use our Stripe token  with an id that has all info for customer
+app.post("/payment", (req, res) => {
+  // body obj is passed a source parameter, which contains what is needed from Stripe
+  const body = {
+    source: req.body.token.id,
+    amount: req.body.amount,
+    currency: "usd"
+  };
+  // make charge with Stripe
+  stripe.charges.create(body, (stripeErr, stripeRes) => {
+    if (stripeErr) {
+      //failure status code and send error
+      res.status(500).send({ error: stripeErr });
+    } else {
+      // if successful, 200 response and send the success Stripe response obj
+      res.status(200).send({ success: stripeRes });
+    }
+  });
 });
