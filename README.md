@@ -4,6 +4,8 @@
 
 ### React - Redux and React Router DOM, Express, Node.js, SCSS, HTML
 
+#### Application bootstrapped with Create-React-App
+
 ### Database and Authentication handled by Firebase
 
 ### Connected to Stripe API
