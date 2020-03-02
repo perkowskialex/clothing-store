@@ -10,5 +10,5 @@
 
 ### Connected to Stripe API
 
-Made through a code along with the Complete React Developer in 2020 on udemy.com
+Made through a code along with the Complete React Developer in 2020 on udemy.com:
 https://www.udemy.com/course/complete-react-developer-zero-to-mastery/
